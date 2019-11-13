@@ -19,7 +19,10 @@ function Login (props) {
             body: JSON.stringify(data)
         })
         .then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => {
+            props.setUser(data)
+            props.route.history.push("/")
+        })
     }
 
     const handleChange = (e) => {
