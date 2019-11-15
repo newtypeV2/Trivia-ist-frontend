@@ -20,8 +20,9 @@ function Login (props) {
         })
         .then(res => res.json())
         .then(data => {
-            props.setUser(data)
-            props.route.history.push("/")
+            // props.setUser(data.user);
+            localStorage.setItem('t_token',data.token)
+            props.route.history.push("/");
         })
     }
 

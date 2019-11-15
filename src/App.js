@@ -2,15 +2,34 @@ import React, {useEffect,useState} from 'react';
 import Login from './components/loginPage';
 import Page404 from './components/pageNotFound';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { TOKEN_URL } from './constants';
 
 
 
-function App() {
+function App(props) {
   const [user, setUser] = useState({})
   console.log('user:',user);
+
+  useEffect(() => {
+    //This is for checking if someone is already logged in via checking the localStorage token.
+    if(localStorage.getItem('t_token') && user.id === undefined){
+      //If token exist, do a post fetch call to decode the userinfo
+      fetch(TOKEN_URL,{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authentication': 'Bearer ' + localStorage.getItem('t_token')
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        setUser(data);
+        props.history.push('/')
+      })
+    }
+  })
+
   return (
-    <Router>
       <div className="App">
         <Switch>
         <Route exact path="/">
@@ -29,8 +48,7 @@ function App() {
         
         </Switch>
       </div>
-    </Router>
   );
 }
 
-export default App;
+export default withRouter(App);
