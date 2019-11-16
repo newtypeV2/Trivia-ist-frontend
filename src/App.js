@@ -1,6 +1,7 @@
 import React, {useEffect,useState} from 'react';
 import Login from './components/loginPage';
 import Page404 from './components/pageNotFound';
+import QuizPage from './components/quizPage';
 import './App.css';
 import {Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { TOKEN_URL } from './constants';
@@ -32,19 +33,26 @@ function App(props) {
   return (
       <div className="App">
         <Switch>
-        <Route exact path="/">
-          {
-            user.id ?
-            <Page404 />
-            :
-            <Redirect to="/login" />
-          }
-        </Route>
+        <Route exact path="/"
+        render={
+          () => (user.id ? (<Redirect to="/quiz" />) : (<Redirect to="/login" />))
+        }/>
           
         <Route exact path="/login" render={
           routerProps => <Login route={routerProps} setUser={setUser} />
         }/>
-          
+
+        <Route exact path="/quiz" render={
+          routerProps => 
+          user.id ? 
+          <QuizPage route={routerProps} quizInfo={user.quizzes} />
+          :
+          <Redirect to="/login" />
+        }/>
+
+        <Route>
+          <Page404 />
+        </Route>  
         
         </Switch>
       </div>
