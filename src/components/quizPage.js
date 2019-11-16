@@ -8,10 +8,8 @@ const QuizPage = (props) => {
 
     const renderQuiz = () => {
         return props.quizInfo.map(quiz => <li key={quiz.id}>
-            {/* {quiz.title} */}
-            <form>
-                <input type='button' value={quiz.title} onClick={clickHandler}/>
-            </form>
+            <span className='list'>{quiz.title}</span>
+                <input className='listbutton' type='button' value='EDIT' onClick={clickHandler}/>
         </li>)
     }
     return (
